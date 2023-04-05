@@ -1,8 +1,7 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
 generator client {
-  provider = "prisma-client-js"
+  provider      = "prisma-client-js"
+  binaryTargets = ["native", "linux-musl"]
+  previewFeatures = ["fullTextSearch"]
 }
 
 datasource db {
@@ -11,13 +10,144 @@ datasource db {
 }
 
 model Employee {
-  id Int @id @default(autoincrement())
-  firstName String
-  lastName String
-  type String
+  id               Int             @id @default(autoincrement())
+  password         String
+  email            String          @unique
+  name             String
+  phone            BigInt?            @unique
+  createdAt        DateTime        @default(now())
+  updatedAt        DateTime        @default(now()) @updatedAt
+  empType          String
+  jobType          String?
+  experience       Int?
+  designation      String?
+  profilePicture   String?
+  profilePicKey    String?
+  jobs             Job[]
+  skills           EmployeeSkills[] 
+  interviews       InterviewRound[]
+}
+
+model Candidate {
+  id                      Int                @id @default(autoincrement())
+  email                   String             @unique
+  createdAt               DateTime           @default(now())
+  updatedAt               DateTime           @default(now()) @updatedAt
+  city                    String?
+  country                 String?
+  phone                   BigInt?               @unique
+  name                    String
+  social                  String?
+  profilePicture          String?
+  profilePicKey           String?
+  resume                  String?
+  resumeKey               String?
+  source                  String?
+  currJobTitle            String?
+  qualification           String?
+  expectedSalary          Int?
+  expectedSalaryUnit      String?
+  currentSalary           Int?
+  currentSalaryUnit       String?
+  experience              Int?
+  info                    String?
+  website                 String?
+  appliedAt               CandidateForJobs[]
+  skills                  CandidateSkills[]
+  socials                 CandidateSocial[]
+  interview               InterviewRound[]
+}
+
+model Skills {
+  id         Int               @id @default(autoincrement())
+  name       String
+  candidates CandidateSkills[]
+  employee   EmployeeSkills[]        
+}
+
+model Job {
+  id                 Int                @id @default(autoincrement())
+  title              String
+  experienceStartRng Int
+  experienceEndRng   Int
+  salaryStartRng     Int
+  salaryEndRng       Int
+  createdAt          DateTime           @default(now())
+  closedAt           DateTime?
+  assignedTo         Int
+  status             String             @default("ASSIGNED")
+  description        String             
+  opening            Int  
+  filled             Int                @default(0)  
+  active             Int                @default(0)       
+  contacting         Int                @default(0)
+  archived           Int                @default(0)
+  department         String                   
+  jobReq             String[]
+  jobRes             String[]
+  city               String
+  keywords           String[]
+  type               String[]
+  employee           Employee           @relation(fields: [assignedTo], references: [id])
+  appliedBy          CandidateForJobs[]
+}
+
+model Newsletter {
+  id    Int    @id @default(autoincrement())
   email String @unique
-  phone BigInt @unique
-  password String
-  organization String
-  recoveryCode Int @default(-1)
+}
+
+model InterviewRound {
+  id            Int       @unique @default(autoincrement())
+  title         String
+  interviewerId Int
+  candidateId   Int
+  date          DateTime
+  startTime     DateTime
+  endTime       DateTime
+  url           String
+  feedback      String?
+  interviewer   Employee  @relation(fields: [interviewerId], references: [id])
+  candidate     Candidate @relation(fields: [candidateId], references: [id])
+}
+
+model CandidateSkills {
+  candidateId Int
+  skillId     Int
+  value       Int
+  candidate   Candidate @relation(fields: [candidateId], references: [id])
+  skill       Skills    @relation(fields: [skillId], references: [id])
+
+  @@id([candidateId, skillId])
+}
+
+model EmployeeSkills {
+  employeeId  Int
+  skillId     Int
+  value       Int?
+  employee    Employee  @relation(fields: [employeeId], references: [id])
+  skill       Skills    @relation(fields: [skillId], references: [id])
+
+  @@id([employeeId, skillId])
+}
+
+model CandidateSocial {
+  id          Int      @id @default(autoincrement())
+  name        String
+  candidateId Int
+  url         String
+  candidate   Candidate @relation(fields: [candidateId], references: [id])
+
+}
+
+model CandidateForJobs {
+  candidateId             Int
+  jobId                   Int
+  stage                   String    @default("SOURCED")
+  preOnboarding           String?
+  dateApplied             DateTime  @default(now())
+  candidate               Candidate @relation(fields: [candidateId], references: [id])
+  job                     Job       @relation(fields: [jobId], references: [id])
+
+  @@id([candidateId, jobId])
 }

@@ -1,0 +1,10 @@
+version: '3'
+services:
+  will-hire-backend-dev:
+    build: .
+    container_name: will-hire-backend-dev
+    restart: always
+    ports:
+      - '8000:8000'
+    environment:
+      - PORT=8000

@@ -1,0 +1,5 @@
+-- AlterTable
+ALTER TABLE "Candidate" ALTER COLUMN "phone" SET DATA TYPE BIGINT;
+
+-- AlterTable
+ALTER TABLE "Employee" ALTER COLUMN "phone" SET DATA TYPE BIGINT;

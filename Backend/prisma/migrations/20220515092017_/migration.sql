@@ -1,0 +1,2 @@
+-- AlterTable
+ALTER TABLE "CandidateForJobs" ADD COLUMN     "dateApplied" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP;

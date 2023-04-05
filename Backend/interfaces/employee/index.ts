@@ -1,8 +1,8 @@
 import { Request } from 'express'
+import { JwtPayload } from 'jsonwebtoken'
 
 export interface IEmp {
-  firstName: string
-  lastName: string
+  nmae: string
   type: string
   email: string
   phone: number
@@ -17,6 +17,15 @@ export interface IEmpToken {
   organization: string
 }
 
+export interface IForgotPassToken {
+  email: string
+}
+
 export interface IRequestWithEmp extends Request {
   emp: IEmpToken
+}
+
+export interface IAdminToken extends JwtPayload {
+  id: number
+  role: string
 }

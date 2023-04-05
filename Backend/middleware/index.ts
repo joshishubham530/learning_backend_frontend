@@ -1,15 +1,14 @@
 import { Request, Response, NextFunction } from 'express'
 import jwt, { Secret } from 'jsonwebtoken'
 import dotenv from 'dotenv'
-import { logger } from '../shared/logger'
 
 dotenv.config()
 
-export const authenticateToken = (req: Request, res: Response, next: NextFunction) => {
-  const { authorization } = req.headers
+export const authToken = (req: Request, res: Response, next: NextFunction): any => {
+  const authorization = req.headers?.authorization
 
   if (!authorization) {
-    return res.status(403).send({ msg: 'Token not provided' })
+    return res.status(403).send({ error: true, message: 'Token not provided' })
   }
 
   const [authType, token] = authorization.split(' ')
@@ -21,13 +20,44 @@ export const authenticateToken = (req: Request, res: Response, next: NextFunctio
     return res.status(403).send({ error: true, message: 'Token not provided' })
   }
 
-  jwt.verify(token, process.env.JWT_SCERET_TOKEN as Secret, (err, emp) => {
-    logger.info(err)
+  jwt.verify(token, process.env.JWT_EMP_SCERET_TOKEN as Secret, (err, data) => {
     if (err) return res.status(403)
 
-    logger.info(emp)
+    req.body.userData = data
+
     next()
     return
   })
-  return res.status(400).send({ error: true, message: 'Token not verified' })
+}
+
+export const adminRole = (req: Request, res: Response, next: NextFunction): any => {
+  if (req.body.userData.role !== 'ADMIN') {
+    return res.status(403).send({ error: true, message: 'unauthorized' })
+  }
+
+  next()
+}
+
+export const recruiterRole = (req: Request, res: Response, next: NextFunction): any => {
+  if (req.body.userData.role !== 'RECRUITER') {
+    return res.status(403).send({ error: true, message: 'unauthorized' })
+  }
+
+  next()
+}
+
+export const interviewerRole = (req: Request, res: Response, next: NextFunction): any => {
+  if (req.body.userData.role !== 'INTERVIEWER') {
+    return res.status(403).send({ error: true, message: 'unauthorized' })
+  }
+
+  next()
+}
+
+export const adminAndRecruiterRole = (req: Request, res: Response, next: NextFunction): any => {
+  if (req.body.userData.role !== 'RECRUITER' && req.body.userData.role !== 'ADMIN') {
+    return res.status(403).send({ error: true, message: 'unauthorized' })
+  }
+
+  next()
 }
