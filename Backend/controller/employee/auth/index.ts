@@ -53,7 +53,8 @@ const Auth = {
   },
 
   forgotPassword: async (req: Request, res: Response): Promise<void> => {
-    logger.info(">> Payload: ", req.body);
+    logger.info(">> Payload: ", req.body.email);
+    console.log("req.body", req.body);
 
     try {
       const user = await prisma.employee.findUnique({

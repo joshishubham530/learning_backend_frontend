@@ -1,20 +1,22 @@
-import nodemailer from 'nodemailer'
-import dotenv from 'dotenv'
-import { PrismaClient } from '@prisma/client'
-import { logger } from './logger'
+import nodemailer from "nodemailer";
+import dotenv from "dotenv";
+import { PrismaClient } from "@prisma/client";
+import { logger } from "./logger";
 
-dotenv.config()
-const prisma = new PrismaClient()
+dotenv.config();
+const prisma = new PrismaClient();
 
 export const transport = nodemailer.createTransport({
-  service: 'Gmail',
+  service: "Gmail",
   auth: {
     user: process.env.MAIL_ID,
     pass: process.env.MAIL_PASSWORD,
   },
-})
+});
 
-export const updateActiveStageOfCandidate = async (id: number): Promise<void> => {
+export const updateActiveStageOfCandidate = async (
+  id: number
+): Promise<void> => {
   await prisma.job.update({
     where: {
       id,
@@ -24,14 +26,17 @@ export const updateActiveStageOfCandidate = async (id: number): Promise<void> =>
         increment: 1,
       },
     },
-  })
+  });
 
-  logger.info('No of active candidates incremented')
-}
+  logger.info("No of active candidates incremented");
+};
 
-export const updateContactingStageOfCandidate = async (id: number, preOnboarding: string): Promise<void> => {
-  if (preOnboarding === 'HIRED') {
-    throw new Error('To set pre onboarding as HIRED, also set stage as HIRED')
+export const updateContactingStageOfCandidate = async (
+  id: number,
+  preOnboarding: string
+): Promise<void> => {
+  if (preOnboarding === "HIRED") {
+    throw new Error("To set pre onboarding as HIRED, also set stage as HIRED");
   }
 
   await prisma.job.update({
@@ -46,17 +51,20 @@ export const updateContactingStageOfCandidate = async (id: number, preOnboarding
         decrement: 1,
       },
     },
-  })
+  });
 
-  logger.info('No of contacting candidate incremented')
-}
+  logger.info("No of contacting candidate incremented");
+};
 
-export const updateArchivedStageOfCandidate = async (id: number, currentStage: string): Promise<void> => {
+export const updateArchivedStageOfCandidate = async (
+  id: number,
+  currentStage: string
+): Promise<void> => {
   if (currentStage == undefined) {
-    throw new Error('currentStage field required to archive a candidate')
+    throw new Error("currentStage field required to archive a candidate");
   }
 
-  if (currentStage == 'PRE ONBOARDING') {
+  if (currentStage == "PRE ONBOARDING") {
     await prisma.job.update({
       where: {
         id,
@@ -69,9 +77,9 @@ export const updateArchivedStageOfCandidate = async (id: number, currentStage: s
           increment: 1,
         },
       },
-    })
+    });
 
-    logger.info('No of archive updated: From Pre Onboarding')
+    logger.info("No of archive updated: From Pre Onboarding");
   } else {
     await prisma.job.update({
       where: {
@@ -85,15 +93,20 @@ export const updateArchivedStageOfCandidate = async (id: number, currentStage: s
           increment: 1,
         },
       },
-    })
+    });
 
-    logger.info('No of archive updated: From Active')
+    logger.info("No of archive updated: From Active");
   }
-}
+};
 
-export const updateHiredStageOfCandidate = async (id: number, preOnboarding: string): Promise<void> => {
-  if (preOnboarding !== 'HIRED') {
-    throw new Error('To set status as HIRED, pre onboarding status should be HIRED')
+export const updateHiredStageOfCandidate = async (
+  id: number,
+  preOnboarding: string
+): Promise<void> => {
+  if (preOnboarding !== "HIRED") {
+    throw new Error(
+      "To set status as HIRED, pre onboarding status should be HIRED"
+    );
   }
 
   await prisma.job.update({
@@ -108,5 +121,5 @@ export const updateHiredStageOfCandidate = async (id: number, preOnboarding: str
         increment: 1,
       },
     },
-  })
-}
+  });
+};

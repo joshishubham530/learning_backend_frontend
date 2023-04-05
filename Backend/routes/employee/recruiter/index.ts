@@ -1,11 +1,16 @@
-import express from 'express'
-import recruiter from '../../../controller/employee/recruiter'
-import { authToken, recruiterRole } from '../../../middleware'
+import express from "express";
+import recruiter from "../../../controller/employee/recruiter";
+import { authToken, recruiterRole } from "../../../middleware";
 
-const router = express.Router()
+const router = express.Router();
+router.post("/recruiter-signup", recruiter.signUp);
+router.post("/candidate", authToken, recruiterRole, recruiter.addCandidate);
+router.post("/interview", authToken, recruiterRole, recruiter.setInterview);
+router.patch(
+  "/candidate-stage",
+  authToken,
+  recruiterRole,
+  recruiter.changeCandidateStage
+);
 
-router.post('/candidate', authToken, recruiterRole, recruiter.addCandidate)
-router.post('/interview', authToken, recruiterRole, recruiter.setInterview)
-router.patch('/candidate-stage', authToken, recruiterRole, recruiter.changeCandidateStage)
-
-export default router
+export default router;
