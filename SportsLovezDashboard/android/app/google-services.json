@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "189346874561",
+    "project_id": "sports-lovez-dashboard",
+    "storage_bucket": "sports-lovez-dashboard.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:189346874561:android:52bf85787c7af01055c040",
+        "android_client_info": {
+          "package_name": "com.sportsloverdashboard"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "189346874561-3bjh5ujf5t7mcus8k090rjlbnqmh3ea3.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD-gwfRWtIxWA9cuuK7wvJfK-x7lG_Kf3E"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "189346874561-3bjh5ujf5t7mcus8k090rjlbnqmh3ea3.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

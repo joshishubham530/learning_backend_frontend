@@ -25,20 +25,20 @@ const common = {
       }
     } catch (e: any) {
       logger.error({ error: e, message: e.message });
-      res
-        .status(500)
-        .send({
-          error: true,
-          message: `Error getting the data from database ${e}`,
-        });
+      res.status(500).send({
+        error: true,
+        message: `Error getting the data from database ${e}`,
+      });
     }
   },
 
   getUser: async (req: Request, res: Response): Promise<void> => {
-    console.log("req", req);
+    console.log("req", req.body);
     try {
       const id = parseInt(req.params.id);
+      console.log("id", id);
       if (isNaN(id)) {
+        console.log("first");
         res.status(400).send({ error: true, message: "Invalid parameter" });
       } else {
         logger.info(">> Parameter: ", id);
@@ -53,12 +53,10 @@ const common = {
       }
     } catch (e: any) {
       logger.error({ error: e, message: e.message });
-      res
-        .status(500)
-        .send({
-          error: true,
-          message: `Error getting the data from database ${e}`,
-        });
+      res.status(500).send({
+        error: true,
+        message: `Error getting the data from database ${e}`,
+      });
     }
   },
 
@@ -78,12 +76,10 @@ const common = {
       res.send({ success: true, data: skills });
     } catch (e: any) {
       logger.error({ error: e, message: e.message });
-      res
-        .status(500)
-        .send({
-          error: true,
-          message: `Error getting the data from database ${e}`,
-        });
+      res.status(500).send({
+        error: true,
+        message: `Error getting the data from database ${e}`,
+      });
     }
   },
 
@@ -128,12 +124,10 @@ const common = {
       res.send({ success: true, data: parsedInterviewers });
     } catch (e: any) {
       logger.error({ error: e, message: e.message });
-      res
-        .status(500)
-        .send({
-          error: true,
-          message: `Error getting the data from database ${e}`,
-        });
+      res.status(500).send({
+        error: true,
+        message: `Error getting the data from database ${e}`,
+      });
     }
   },
 
@@ -148,12 +142,10 @@ const common = {
       res.send({ success: true, data: count });
     } catch (e: any) {
       logger.error({ error: e, message: e.message });
-      res
-        .status(500)
-        .send({
-          error: true,
-          message: `Error getting the data from database ${e}`,
-        });
+      res.status(500).send({
+        error: true,
+        message: `Error getting the data from database ${e}`,
+      });
     }
   },
   allEmployee: async (req: Request, res: Response): Promise<void> => {
@@ -177,12 +169,10 @@ const common = {
       }
     } catch (e: any) {
       logger.error({ error: e, message: e.message });
-      res
-        .status(500)
-        .json({
-          error: true,
-          message: `Error getting the data from database ${e}`,
-        });
+      res.status(500).json({
+        error: true,
+        message: `Error getting the data from database ${e}`,
+      });
     }
   },
 };

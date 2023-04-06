@@ -109,7 +109,7 @@ const Auth = {
 
   changePassword: async (req: Request, res: Response): Promise<void> => {
     const { password, token } = req.body;
-
+    console.log("req.body", req.body);
     const hashedPassword = await bcrypt.hash(password, 12);
 
     logger.info(">> Payload: ", req.body);
