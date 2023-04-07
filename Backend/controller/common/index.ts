@@ -33,23 +33,27 @@ const common = {
   },
 
   getUser: async (req: Request, res: Response): Promise<void> => {
-    console.log("req", req.body);
     try {
-      const id = parseInt(req.params.id);
-      console.log("id", id);
+      const id = parseInt("0");
+      console.log("req.params", req.params);
+      console.log("idssss", id);
       if (isNaN(id)) {
         console.log("first");
         res.status(400).send({ error: true, message: "Invalid parameter" });
       } else {
-        logger.info(">> Parameter: ", id);
+        const allUsers = await prisma.employee.findMany();
+        const user = allUsers.filter((e) => e.id !== id);
 
-        const user = await prisma.candidate.findUnique({
-          where: {
-            id,
-          },
+        res.send({
+          success: true,
+          data: user.map((e) => {
+            return {
+              name: e.name,
+              email: e.email,
+              id: e.id,
+            };
+          }),
         });
-
-        res.send({ success: true, data: user });
       }
     } catch (e: any) {
       logger.error({ error: e, message: e.message });
