@@ -1,5 +1,8 @@
 import { useNavigation } from "@react-navigation/native";
-import React from "react";
+import { useQuery } from "react-query";
+import useGet from "../hooks/useGet";
+import React, { useEffect } from "react";
+
 import {
   Dimensions,
   ScrollView,
@@ -43,6 +46,17 @@ const userData = [
 ];
 
 const Chats = () => {
+  const argument = {
+    key: "length",
+    url: "/user",
+    token: true,
+  };
+  const { refetch: fetchDetails, data } = useGet("length", "/user");
+
+  useEffect(() => {
+    fetchDetails();
+  }, [data]);
+  console.log("data", data);
   const navigation = useNavigation();
   // const test: any = ;
   return (
@@ -66,9 +80,9 @@ const Chats = () => {
       </ScrollView>
       <View style={styles.newChat}>
         <MaterialCommunityIcons
-          name='android-messages'
+          name="android-messages"
           size={30}
-          color='#fff'
+          color="#fff"
         />
       </View>
     </>
