@@ -5,12 +5,13 @@ import commonRoutes from "./routes/common";
 import testRoutes from "./routes/test";
 import recruiterRoutes from "./routes/employee/recruiter";
 import Chat from "./routes/chat";
+const app: Application = express();
 
-const createServer = (): express.Application => {
-  const app: Application = express();
+const createServer = () => {
   var cors = require("cors");
 
   // Body parsing Middleware
+
   app.use(cors());
   app.use(express.json());
   app.use(express.urlencoded({ extended: true }));
